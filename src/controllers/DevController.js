@@ -64,7 +64,7 @@ module.exports = {
       coordinates: [longitude, latitude],
     };
 
-    dev = await Dev.updateOne({
+    dev = await Dev.update({
       techs: techsArray,
       location,
     });
@@ -72,5 +72,21 @@ module.exports = {
     dev = await Dev.findOne({ github_username });
 
     return res.json(dev);
+  },
+
+  async destroy(req, res) {
+    const { github_username } = req.query;
+
+    let dev = await Dev.findOne({ github_username });
+
+    if (!dev) {
+      return res.status(400).json({
+        error: "Dev doesn't exist in database.",
+      });
+    }
+
+    dev = await Dev.deleteOne({ github_username });
+
+    return res.json({ message: 'Dev deleted successfully!' });
   },
 };
