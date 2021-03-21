@@ -10,11 +10,22 @@ const server = http.Server(app);
 
 setupWebsocket(server);
 
-mongoose.connect('mongodb://localhost:27017/mongo-dev-position', {
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  useFindAndModify: true,
-  useCreateIndex: true,
+mongoose.connect(
+  'mongodb://mongodb:mongodb@localhost:27017/mongo-dev-position?authSource=admin',
+  {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useFindAndModify: true,
+    useCreateIndex: true,
+  }
+);
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // we're connected!
+  console.log(`MongoDB connected`);
 });
 
 // express sempre tem que vir antes do routes
