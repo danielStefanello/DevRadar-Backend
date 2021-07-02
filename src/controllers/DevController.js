@@ -27,7 +27,7 @@ module.exports = {
         `https://api.github.com/users/${github_username}`
       );
 
-      const { name = login, avatar_url, bio } = apiRes.data;
+      const { login: name, avatar_url, bio } = apiRes.data;
 
       const techsArray = parseStringAsArray(techs);
 
@@ -47,10 +47,10 @@ module.exports = {
 
       const sendSocketMessageTo = findConnections(
         { latitude, longitude },
-        techsArray,
-      )
+        techsArray
+      );
 
-      sendMessage(sendSocketMessageTo,'new-dev', dev);
+      sendMessage(sendSocketMessageTo, 'new-dev', dev);
     }
 
     return res.json(dev);
